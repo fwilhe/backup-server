@@ -1,54 +1,27 @@
-# Linux Image Template Repo
+# Backup Server Image
 
-You have multiple options to build the image.
-The easiest option with the least requirements to your computer is _Building with GitHub Codespaces_.
+Using [restic/rest-server](https://github.com/restic/rest-server)
 
-## Building with GitHub Codespaces
+## Features
 
-To build with GitHub Codespaces, first create a repository based on this template repo.
+`resticNative` uses a plain go binary of `restic/rest-server`
 
-![](./docs/codespaces-01.png)
+`resticContainer` uses a container of `restic/rest-server`
 
-Create the repo in your own user account and give it a name.
-Make the repo public.
-
-![](./docs/codespaces-02.png)
-
-Open a new Codespace in that repo.
-
-![](./docs/codespaces-03.png)
-
-Run the `build-codespace` script like this:
-
-`./build-codespace base`
-
-This will call the `build` script with a few Codespace specific additions.
-
-It will take a few minutes and produce a lot of output.
-
-![](./docs/codespaces-04.png)
-
-Your image is built.
-See the line with the `.raw` file?
-That's your image.
-
-![](./docs/codespaces-05.png)
-
-Use that file name to run your image now using this command:
-
-```
-sudo ./run-vm.sh your-image-name.raw
+```mermaid
+graph TD;
+    base-->restic;
+    base-->networking;
+    restic-->resticNative;
+    networking-->resticNative;
+    restic-->resticContainer;
 ```
 
-![](./docs/codespaces-06.png)
+## Build
 
-## Building with Podman Desktop
+Pick one of the features, based on your preference:
 
-With [Podman Desktop](https://podman-desktop.io) installed and set up, you should be able to run `./build base` from the terminal of your mac or Windows laptop.
-
-You will need to setup [QEMU](https://www.qemu.org) to run the image.
-
-## Building with Garden Linux Dev Image
-
-Using the `imagebuilder-qemu-amd64` or `imagebuilder-qemu-arm64` image from https://github.com/gardenlinux/dev-image, you can get a virtual machine running that's set-up for building images.
-Follow the instructions in the readme.
+```
+./build resticNative
+./build resticContainer
+```
